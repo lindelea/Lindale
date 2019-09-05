@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 fun ImageView.setImageFromUrl(url: String?) {
     url?.let {
-        it.httpGet().response { result ->
+        val httpAsync = it.httpGet().response { result ->
 
             val (data, _) = result
 
@@ -15,5 +15,7 @@ fun ImageView.setImageFromUrl(url: String?) {
                 setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
             }
         }
+
+        httpAsync.join()
     }
 }
