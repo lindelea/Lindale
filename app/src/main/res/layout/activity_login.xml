@@ -7,7 +7,7 @@
     tools:context=".activities.LoginActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/sideBarPhoto"
         android:layout_width="199dp"
         android:layout_height="140dp"
         android:layout_marginStart="100dp"
@@ -36,7 +36,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/sideBarPhoto" />
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/sideBarEmailText"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginBottom="32dp"

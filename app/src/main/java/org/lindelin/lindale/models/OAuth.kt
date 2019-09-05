@@ -1,9 +1,12 @@
 package org.lindelin.lindale.models
 
+import android.content.Context
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import org.lindelin.lindale.supports.Keys
+import org.lindelin.lindale.supports.Preferences
 
 data class OAuth(var tokenType: String,
                  var expiresIn: Int,
@@ -22,7 +25,7 @@ data class OAuth(var tokenType: String,
                     "scope" to "*"
                 ))
                 .responseObject(OAuth.Deserializer()) {
-                        request, response, result ->
+                        _, _, result ->
                     val (oauth, error) = result
 
                     error?.let {
@@ -31,10 +34,16 @@ data class OAuth(var tokenType: String,
                         return@responseObject
                     }
 
-                    println(oauth!!.accessToken)
                     callback(oauth)
                 }
             httpAsync.join()
+        }
+    }
+
+    fun save(context: Context) {
+        Preferences(context).transaction {
+            putString(Keys.ACCESS_TOKEN, accessToken)
+            putString(Keys.REFRESH_TOKEN, refreshToken)
         }
     }
 
