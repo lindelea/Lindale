@@ -6,6 +6,7 @@ import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.httpGet
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import org.lindelin.lindale.Application
 import org.lindelin.lindale.supports.Keys
 import org.lindelin.lindale.supports.Preferences
 
@@ -23,9 +24,9 @@ data class Profile(var id: Int,
                    var activity: String) {
 
     companion object {
-        fun feach(context: Context, callback: (Profile?) -> Unit) {
+        fun fetch(context: Context, callback: (Profile?) -> Unit) {
             Preferences(context).getString(Keys.ACCESS_TOKEN)?.let { accessToken ->
-                val httpAsync = "https://lindale.stg.lindelin.org/api/profile"
+                "/api/profile"
                     .httpGet()
                     .authentication()
                     .bearer(accessToken)
@@ -42,7 +43,6 @@ data class Profile(var id: Int,
 
                         callback(profile)
                     }
-                httpAsync.join()
             }
         }
     }

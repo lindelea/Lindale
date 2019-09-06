@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import org.lindelin.lindale.R
 import org.lindelin.lindale.models.Profile
@@ -15,34 +16,23 @@ class HomeFragment : Fragment() {
 
     private var profile: Profile? = null
 
-    private lateinit var homeViewModel: HomeViewModel
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+            = inflater.inflate(R.layout.fragment_home, container, false)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadData {
-            root.profileImageView.setImageFromUrl(profile?.photo)
-            root.projectCountText.text = profile?.status?.projectCount.toString()
-            root.taskCountText.text = profile?.status?.unfinishedTaskCount.toString()
-            root.todoCountText.text = profile?.status?.unfinishedTodoCount.toString()
+            profileImageView.setImageFromUrl(profile?.photo)
+            projectCountText.text = profile?.status?.projectCount.toString()
+            taskCountText.text = profile?.status?.unfinishedTaskCount.toString()
+            todoCountText.text = profile?.status?.unfinishedTodoCount.toString()
         }
-
-        return root
     }
 
     fun loadData(callback: () -> Unit = {}) {
-        activity?.let {
-            Profile.feach(it) { profile ->
-                profile?.let {
-                    this.profile = it
-                    callback()
-                }
+        Profile.fetch(this.context!!) { profile ->
+            profile?.let {
+                this.profile = it
+                callback()
             }
         }
     }

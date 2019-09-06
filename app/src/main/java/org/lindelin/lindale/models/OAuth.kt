@@ -5,6 +5,7 @@ import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import org.lindelin.lindale.Application
 import org.lindelin.lindale.supports.Keys
 import org.lindelin.lindale.supports.Preferences
 
@@ -14,12 +15,13 @@ data class OAuth(var tokenType: String,
                  var refreshToken: String) {
 
     companion object {
-        fun login(email: String, password: String, callback: (OAuth?) -> Unit) {
-            val httpAsync = "https://lindale.stg.lindelin.org/oauth/token"
+        fun login(context: Context, email: String, password: String, callback: (Boolean) -> Unit) {
+            val app = context.applicationContext as Application
+            val httpAsync = "/oauth/token"
                 .httpPost(listOf(
                     "grant_type" to "password",
-                    "client_id" to "1",
-                    "client_secret" to "QYvbbd9zoXWtOEBYTVhspVnGoPMUgEckD95Lfmjv",
+                    "client_id" to app.getClientId(),
+                    "client_secret" to app.getClientSecret(),
                     "username" to email,
                     "password" to password,
                     "scope" to "*"
@@ -29,12 +31,14 @@ data class OAuth(var tokenType: String,
                     val (oauth, error) = result
 
                     error?.let {
-                        callback(null)
+                        callback(false)
                         println(it.response.statusCode)
                         return@responseObject
                     }
 
-                    callback(oauth)
+                    oauth?.save(context)
+
+                    callback(true)
                 }
             httpAsync.join()
         }

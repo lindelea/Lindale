@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadData(callback: () -> Unit = {}) {
-        Profile.feach(this) { profile ->
+        Profile.fetch(this) { profile ->
             profile?.let {
                 this.profile = it
                 callback()

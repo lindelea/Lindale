@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_login.*
+import org.lindelin.lindale.Application
 import org.lindelin.lindale.R
 import org.lindelin.lindale.models.OAuth
 import org.lindelin.lindale.supports.Keys
@@ -12,8 +13,13 @@ import org.lindelin.lindale.supports.Preferences
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var app: Application
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        app = application as Application
+        app.init()
 
         when (Preferences(this).getString(Keys.ACCESS_TOKEN)) {
             null -> initView()
@@ -25,9 +31,8 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
 
-        OAuth.login(email, password) {
-            it?.let {
-                it.save(this)
+        OAuth.login(this, email, password) {
+            if (it) {
                 openHome()
             }
         }
