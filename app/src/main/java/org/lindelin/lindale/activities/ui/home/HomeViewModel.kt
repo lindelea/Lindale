@@ -3,11 +3,14 @@ package org.lindelin.lindale.activities.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.lindelin.lindale.models.Profile
 
 class HomeViewModel : ViewModel() {
+    val _profile = MutableLiveData<Profile>()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    fun set(item: Profile) {
+        _profile.value = item
     }
-    val text: LiveData<String> = _text
+
+    val profile: LiveData<Profile> = _profile
 }
