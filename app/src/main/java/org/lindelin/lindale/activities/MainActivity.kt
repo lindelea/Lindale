@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import org.lindelin.lindale.R
@@ -21,7 +22,6 @@ import org.lindelin.lindale.supports.setImageFromUrl
 
 class MainActivity : AppCompatActivity() {
 
-    var profile: Profile? = null
     private lateinit var homeViewModel: HomeViewModel
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        homeViewModel = ViewModelProviders.of(this)[HomeViewModel::class.java]
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -45,15 +47,12 @@ class MainActivity : AppCompatActivity() {
             ), drawerLayout
         )
 
-        homeViewModel = ViewModelProviders.of(this)[HomeViewModel::class.java]
-
-        loadData {
-            setupSideBarHeader(navView)
-            homeViewModel.set(profile!!)
-        }
-
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        homeViewModel.getProfile().observe(this, Observer<Profile>{
+            setupSideBarHeader(navView, it)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -67,36 +66,17 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun loadData(callback: () -> Unit = {}) {
-        Profile.fetch(this) { profile ->
-            profile?.let {
-                println("0000000000000000000000000000000000")
-                this.profile = it
-                callback()
-            }
-        }
-    }
-
-    fun setupSideBarHeader(navView: NavigationView) {
+    fun setupSideBarHeader(navView: NavigationView, profile: Profile) {
         val headerView = navView.getHeaderView(0)
 
-        headerView.sideBarPhoto.setImageFromUrl(profile?.photo)
+        headerView.sideBarPhoto.setImageFromUrl(profile.photo)
 
         headerView.sideBarNameText.apply {
-            text = profile?.name
+            text = profile.name
         }
 
         headerView.sideBarEmailText.apply {
-            text = profile?.email
+            text = profile.email
         }
-    }
-
-    fun button(view: View) {
-        val aaa = homeViewModel.profile.value!!
-        aaa.status.projectCount = 100
-
-        homeViewModel.set(aaa)
-
-        println(aaa)
     }
 }

@@ -26,8 +26,7 @@ class HomeFragment : Fragment() {
             ViewModelProviders.of(this)[HomeViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        homeViewModel.profile.observe(this, Observer<Profile> {
-            updateUI(it)
+        homeViewModel.getProfile().observe(this, Observer<Profile> {
         })
 
         return inflater.inflate(R.layout.fragment_home, container, false)
