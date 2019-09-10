@@ -2,20 +2,26 @@ package org.lindelin.lindale.supports
 
 import android.graphics.BitmapFactory
 import android.widget.ImageView
-import com.github.kittinunf.fuel.httpGet
-import kotlinx.android.synthetic.main.nav_header_main.view.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.net.URL
 
 fun ImageView.setImageFromUrl(url: String?) {
     url?.let {
-        val httpAsync = it.httpGet().response { result ->
+        doAsync {
+            val imageUrl = URL(it)
+            val connection = imageUrl.openConnection()
+            connection.connectTimeout = 6000
+            connection.doInput = true
+            connection.useCaches = true
+            connection.connect()
+            val imgBit = connection.getInputStream()
+            val bmp = BitmapFactory.decodeStream(imgBit)
+            imgBit.close()
 
-            val (data, _) = result
-
-            data?.let {
-                setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+            uiThread {
+               setImageBitmap(bmp)
             }
         }
-
-        httpAsync.join()
     }
 }

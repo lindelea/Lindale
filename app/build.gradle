@@ -49,4 +49,5 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel:2.2.0'
     implementation 'com.github.kittinunf.fuel:fuel-gson:2.2.0'
     implementation 'com.github.kittinunf.fuel:fuel-android:2.2.0'
+    implementation 'org.jetbrains.anko:anko-common:0.9'
 }
