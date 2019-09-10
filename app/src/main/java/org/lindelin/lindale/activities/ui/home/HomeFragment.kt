@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import org.lindelin.lindale.R
 import org.lindelin.lindale.models.Profile
-import org.lindelin.lindale.supports.setImageFromUrl
+import org.lindelin.lindale.supports.loadHtmlString
 
 class HomeFragment : Fragment() {
 
@@ -38,6 +37,10 @@ class HomeFragment : Fragment() {
     }
 
     fun updateUI(profile: Profile) {
+//        val encodedHtml = Base64.encodeToString(profile.activity.toByteArray(), Base64.NO_PADDING)
+//        activityWebView.settings.javaScriptEnabled = true
+//        activityWebView.loadData(encodedHtml, "text/html", "base64")
+        activityWebView.loadHtmlString(profile.activity)
         projectCountText.text = profile.status.projectCount.toString()
         taskCountText.text = profile.status.unfinishedTaskCount.toString()
         todoCountText.text = profile.status.unfinishedTodoCount.toString()

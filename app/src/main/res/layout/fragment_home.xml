@@ -215,11 +215,14 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/buttondddd"
+            <WebView
+                android:id="@+id/activityWebView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="430dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="24dp" />
 
         </LinearLayout>
     </ScrollView>
