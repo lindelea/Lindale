@@ -1,5 +1,6 @@
 package org.lindelin.lindale.activities
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -53,6 +54,10 @@ class MainActivity : AppCompatActivity() {
         homeViewModel.getProfile().observe(this, Observer<Profile>{
             setupSideBarHeader(navView, it)
         })
+
+        homeViewModel.getUserPhoto().observe(this, Observer {
+            setupSideBarHeaderImage(navView, it)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -78,5 +83,11 @@ class MainActivity : AppCompatActivity() {
         headerView.sideBarEmailText.apply {
             text = profile.email
         }
+    }
+
+    fun setupSideBarHeaderImage(navView: NavigationView, image: Bitmap) {
+        val headerView = navView.getHeaderView(0)
+
+        headerView.sideBarPhoto.setImageBitmap(image)
     }
 }

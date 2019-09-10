@@ -26,15 +26,18 @@ class HomeFragment : Fragment() {
             ViewModelProviders.of(this)[HomeViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        homeViewModel.getProfile().observe(this, Observer<Profile> {
+        homeViewModel.getProfile().observe(this, Observer {
+            updateUI(it)
+        })
+
+        homeViewModel.getUserPhoto().observe(this, Observer {
+            profileImageView.setImageBitmap(it)
         })
 
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-
     fun updateUI(profile: Profile) {
-        profileImageView.setImageFromUrl(profile.photo)
         projectCountText.text = profile.status.projectCount.toString()
         taskCountText.text = profile.status.unfinishedTaskCount.toString()
         todoCountText.text = profile.status.unfinishedTodoCount.toString()
