@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.lindelin.lindale.R
 import org.lindelin.lindale.models.Profile
 import org.lindelin.lindale.supports.loadHtmlString
+import org.lindelin.lindale.supports.onProgressChanged
 
 class HomeFragment : Fragment() {
 
@@ -37,6 +38,9 @@ class HomeFragment : Fragment() {
     }
 
     fun updateUI(profile: Profile) {
+        projectProgressBar.onProgressChanged(profile.progress.total)
+        taskProgressBar.onProgressChanged(profile.progress.task)
+        todoProgressBar.onProgressChanged(profile.progress.todo)
         activityWebView.loadHtmlString(profile.activity)
         projectCountText.text = profile.status.projectCount.toString()
         taskCountText.text = profile.status.unfinishedTaskCount.toString()

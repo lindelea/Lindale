@@ -78,21 +78,13 @@ class MainActivity : AppCompatActivity(), FavoriteFragment.OnListFragmentInterac
 
     fun setupSideBarHeader(navView: NavigationView, profile: Profile) {
         val headerView = navView.getHeaderView(0)
-
         headerView.sideBarPhoto.setImageFromUrl(profile.photo)
-
-        headerView.sideBarNameText.apply {
-            text = profile.name
-        }
-
-        headerView.sideBarEmailText.apply {
-            text = profile.email
-        }
+        headerView.sideBarNameText.text = profile.name
+        headerView.sideBarEmailText.text = profile.email
     }
 
     fun setupSideBarHeaderImage(navView: NavigationView, image: Bitmap) {
         val headerView = navView.getHeaderView(0)
-
         headerView.sideBarPhoto.setImageBitmap(image)
     }
 }

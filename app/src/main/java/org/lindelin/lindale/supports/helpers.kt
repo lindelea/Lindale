@@ -1,10 +1,13 @@
 package org.lindelin.lindale.supports
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.view.animation.DecelerateInterpolator
 import android.webkit.WebView
 import android.widget.ImageView
+import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -35,4 +38,11 @@ fun WebView.loadHtmlString(html: String) {
     settings.javaScriptEnabled = true
     val encodedHtml = Base64.encodeToString(html.toByteArray(), Base64.NO_PADDING)
     loadData(encodedHtml, "text/html", "base64")
+}
+
+fun ProgressBar.onProgressChanged(percentage: Int) {
+    val animation = ObjectAnimator.ofInt(this, "progress", percentage)
+    animation.duration = 500
+    animation.interpolator = DecelerateInterpolator()
+    animation.start()
 }

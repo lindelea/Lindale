@@ -1,5 +1,6 @@
 package org.lindelin.lindale.activities.ui.favorite
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,8 @@ import org.lindelin.lindale.models.Project
 import org.lindelin.lindale.supports.setImageFromUrl
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [Project] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class MyFavoriteRecyclerViewAdapter(
     private val mValues: List<Project>,
@@ -42,10 +42,14 @@ class MyFavoriteRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.typeText.text = item.type
         holder.titleText.text = item.title
+        holder.progressText.text = "${item.progress}%"
+        holder.taskStatusText.text = item.taskStatus
+        holder.todoStatusText.text = item.todoStatus
         holder.imageView.setImageFromUrl(item.image)
 
         with(holder.mView) {
@@ -59,6 +63,9 @@ class MyFavoriteRecyclerViewAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val typeText: TextView = mView.item_number
         val titleText: TextView = mView.content
+        val progressText: TextView = mView.progressText
+        val taskStatusText: TextView = mView.taskStatusText
+        val todoStatusText: TextView = mView.todoStatusText
         val imageView: ImageView = mView.image
 
         override fun toString(): String {

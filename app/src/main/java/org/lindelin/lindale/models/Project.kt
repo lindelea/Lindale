@@ -10,7 +10,13 @@ data class Project(var id: Int,
                    var start_at: String?,
                    var end_at: String?,
                    var image: String,
-                   var type: String) {
+                   var type: String,
+                   var status: String,
+                   var taskStatus: String,
+                   var todoStatus: String,
+                   var progress: Int,
+                   var createdAt: String,
+                   var updatedAt: String) {
 
     class Deserializer : ResponseDeserializable<Project> {
         override fun deserialize(content: String): Project {
