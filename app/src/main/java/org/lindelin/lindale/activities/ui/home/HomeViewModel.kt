@@ -29,7 +29,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private fun loadData() {
         Profile.fetch(getApplication()) { profile ->
             profile?.let {
-                print("000000000000000000000000000000000000000000000000000")
                 this.profile.value = it
                 loadImage(it.photo)
             }

@@ -12,16 +12,21 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import org.lindelin.lindale.R
+import org.lindelin.lindale.activities.ui.favorite.FavoriteFragment
 import org.lindelin.lindale.activities.ui.home.HomeViewModel
 import org.lindelin.lindale.models.Profile
+import org.lindelin.lindale.models.Project
 import org.lindelin.lindale.supports.setImageFromUrl
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FavoriteFragment.OnListFragmentInteractionListener {
+
+    override fun onListFragmentInteraction(item: Project?) {
+        println(item)
+    }
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_home, R.id.nav_favorite, R.id.nav_gallery, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send
             ), drawerLayout
         )

@@ -21,7 +21,8 @@ data class Profile(var id: Int,
                    var updatedAt: String,
                    var status: Status,
                    var progress: Progress,
-                   var activity: String) {
+                   var activity: String,
+                   var projects: Projects) {
 
     companion object {
         fun fetch(context: Context, callback: (Profile?) -> Unit) {
@@ -71,6 +72,18 @@ data class Profile(var id: Int,
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                     .create()
                 return gson.fromJson(content, Progress::class.java)
+            }
+        }
+    }
+
+    data class Projects(var favorites: MutableList<Project>) {
+
+        class Deserializer : ResponseDeserializable<Projects> {
+            override fun deserialize(content: String): Projects {
+                val gson = GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .create()
+                return gson.fromJson(content, Projects::class.java)
             }
         }
     }

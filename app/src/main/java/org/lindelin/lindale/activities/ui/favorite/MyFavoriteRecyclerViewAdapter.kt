@@ -4,14 +4,16 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import org.lindelin.lindale.R
 
 
 import org.lindelin.lindale.activities.ui.favorite.FavoriteFragment.OnListFragmentInteractionListener
-import org.lindelin.lindale.activities.ui.favorite.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
+import org.lindelin.lindale.models.Project
+import org.lindelin.lindale.supports.setImageFromUrl
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_favorite.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class MyFavoriteRecyclerViewAdapter(
-    private val mValues: List<DummyItem>,
+    private val mValues: List<Project>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyFavoriteRecyclerViewAdapter.ViewHolder>() {
 
@@ -27,7 +29,7 @@ class MyFavoriteRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as Project
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -42,8 +44,9 @@ class MyFavoriteRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.mContentView.text = item.content
+        holder.typeText.text = item.type
+        holder.titleText.text = item.title
+        holder.imageView.setImageFromUrl(item.image)
 
         with(holder.mView) {
             tag = item
@@ -54,11 +57,12 @@ class MyFavoriteRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
+        val typeText: TextView = mView.item_number
+        val titleText: TextView = mView.content
+        val imageView: ImageView = mView.image
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + titleText.text + "'"
         }
     }
 }

@@ -37,9 +37,6 @@ class HomeFragment : Fragment() {
     }
 
     fun updateUI(profile: Profile) {
-//        val encodedHtml = Base64.encodeToString(profile.activity.toByteArray(), Base64.NO_PADDING)
-//        activityWebView.settings.javaScriptEnabled = true
-//        activityWebView.loadData(encodedHtml, "text/html", "base64")
         activityWebView.loadHtmlString(profile.activity)
         projectCountText.text = profile.status.projectCount.toString()
         taskCountText.text = profile.status.unfinishedTaskCount.toString()

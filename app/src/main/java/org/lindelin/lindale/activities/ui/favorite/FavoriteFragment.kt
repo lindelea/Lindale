@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import org.lindelin.lindale.R
-
-import org.lindelin.lindale.activities.ui.favorite.dummy.DummyContent
-import org.lindelin.lindale.activities.ui.favorite.dummy.DummyContent.DummyItem
+import org.lindelin.lindale.activities.ui.home.HomeViewModel
+import org.lindelin.lindale.models.Project
 
 /**
  * A fragment representing a list of Items.
@@ -20,6 +22,8 @@ import org.lindelin.lindale.activities.ui.favorite.dummy.DummyContent.DummyItem
  * [FavoriteFragment.OnListFragmentInteractionListener] interface.
  */
 class FavoriteFragment : Fragment() {
+
+    private lateinit var homeViewModel: HomeViewModel
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -39,6 +43,9 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_favorite_list, container, false)
+        homeViewModel = activity?.run {
+            ViewModelProviders.of(this)[HomeViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -47,7 +54,10 @@ class FavoriteFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFavoriteRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                view.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
+                homeViewModel.getProfile().observe(this@FavoriteFragment, Observer {
+                    adapter = MyFavoriteRecyclerViewAdapter(it.projects.favorites, listener)
+                })
             }
         }
         return view
@@ -80,7 +90,7 @@ class FavoriteFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: Project?)
     }
 
     companion object {
