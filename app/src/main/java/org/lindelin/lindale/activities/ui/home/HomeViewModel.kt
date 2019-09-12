@@ -26,6 +26,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         return userPhoto
     }
 
+    fun refreshData(callBack: () -> Unit) {
+        Profile.fetch(getApplication()) { profile ->
+            profile?.let {
+                this.profile.postValue(it)
+                loadImage(it.photo)
+                callBack()
+            }
+        }
+    }
+
     private fun loadData() {
         Profile.fetch(getApplication()) { profile ->
             profile?.let {

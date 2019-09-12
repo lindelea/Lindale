@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_favorite_list.*
 import org.lindelin.lindale.R
 import org.lindelin.lindale.activities.ui.home.HomeViewModel
 import org.lindelin.lindale.models.Project
@@ -21,9 +23,11 @@ import org.lindelin.lindale.models.Project
  * Activities containing this fragment MUST implement the
  * [FavoriteFragment.OnListFragmentInteractionListener] interface.
  */
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var homeViewModel: HomeViewModel
+
+    private lateinit var refreshControl: SwipeRefreshLayout
 
     private var columnCount = 1
 
@@ -46,19 +50,29 @@ class FavoriteFragment : Fragment() {
             ViewModelProviders.of(this)[HomeViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
+        refreshControl = view.findViewById(R.id.swipeContainer)
+        refreshControl.setOnRefreshListener(this)
+        refreshControl.setColorSchemeResources(R.color.colorPrimary,
+            android.R.color.holo_green_dark,
+            android.R.color.holo_orange_dark,
+            android.R.color.holo_blue_dark)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.favoriteList)
+
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
+        if (recyclerView is RecyclerView) {
+            with(recyclerView) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                view.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
+                recyclerView.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
                 homeViewModel.getProfile().observe(this@FavoriteFragment, Observer {
                     adapter = MyFavoriteRecyclerViewAdapter(it.projects.favorites, listener)
                 })
             }
         }
+
         return view
     }
 
@@ -74,6 +88,12 @@ class FavoriteFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun onRefresh() {
+        homeViewModel.refreshData {
+            refreshControl.isRefreshing = false
+        }
     }
 
     /**

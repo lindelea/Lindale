@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
+    android:id="@+id/favoriteList"
     android:name="org.lindelin.lindale.activities.ui.favorite.FavoriteFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,3 +17,5 @@
     app:layoutManager="LinearLayoutManager"
     tools:context=".activities.ui.favorite.FavoriteFragment"
     tools:listitem="@layout/fragment_favorite" />
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
