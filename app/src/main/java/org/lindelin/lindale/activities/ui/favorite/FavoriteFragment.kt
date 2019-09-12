@@ -50,12 +50,7 @@ class FavoriteFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             ViewModelProviders.of(this)[HomeViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        refreshControl = view.findViewById(R.id.swipeContainer)
-        refreshControl.setOnRefreshListener(this)
-        refreshControl.setColorSchemeResources(R.color.colorPrimary,
-            android.R.color.holo_green_dark,
-            android.R.color.holo_orange_dark,
-            android.R.color.holo_blue_dark)
+        setupRefreshControl(view)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.favoriteList)
 
@@ -94,6 +89,15 @@ class FavoriteFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         homeViewModel.refreshData {
             refreshControl.isRefreshing = false
         }
+    }
+
+    fun setupRefreshControl(view: View) {
+        refreshControl = view.findViewById(R.id.swipeContainer)
+        refreshControl.setOnRefreshListener(this)
+        refreshControl.setColorSchemeResources(R.color.colorPrimary,
+            android.R.color.holo_green_dark,
+            android.R.color.holo_orange_dark,
+            android.R.color.holo_blue_dark)
     }
 
     /**
