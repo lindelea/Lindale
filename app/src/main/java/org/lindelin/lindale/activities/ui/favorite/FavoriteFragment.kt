@@ -25,7 +25,6 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    // TODO: Customize parameters
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
