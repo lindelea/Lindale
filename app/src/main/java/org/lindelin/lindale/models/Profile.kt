@@ -1,6 +1,7 @@
 package org.lindelin.lindale.models
 
 import android.content.Context
+import android.widget.Toast
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.httpGet
@@ -27,6 +28,7 @@ data class Profile(var id: Int,
 
     companion object {
         fun fetch(context: Context, callback: (Profile?) -> Unit) {
+            Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
             Preferences(context).getString(Keys.ACCESS_TOKEN)?.let { accessToken ->
                 "/api/profile"
                     .httpGet()
@@ -43,6 +45,7 @@ data class Profile(var id: Int,
                             return@responseObject
                         }
 
+                        Toast.makeText(context, "OK!!!!", Toast.LENGTH_SHORT).show()
                         callback(profile)
                     }
             }
