@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.kittinunf.fuel.httpGet
 import org.lindelin.lindale.models.Profile
+import org.lindelin.lindale.supports.Keys
+import org.lindelin.lindale.supports.Preferences
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val profile: MutableLiveData<Profile> by lazy {
@@ -31,6 +33,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             profile?.let {
                 this.profile.postValue(it)
                 loadImage(it.photo)
+                syncPreferences(profile)
                 callBack()
             }
         }
@@ -41,6 +44,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             profile?.let {
                 this.profile.value = it
                 loadImage(it.photo)
+                syncPreferences(profile)
             }
         }
     }
@@ -56,5 +60,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         httpAsync.join()
+    }
+
+    private fun syncPreferences(profile: Profile) {
+        Preferences(getApplication()).transaction {
+            putString(Keys.USER_NAME, profile.name)
+            putString(Keys.USER_EMAIL, profile.email)
+            putString(Keys.USER_CONTENT, profile.content)
+            putString(Keys.USER_ORG, profile.company)
+        }
     }
 }

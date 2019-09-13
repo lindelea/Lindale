@@ -17,42 +17,41 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/profile_header">
 
         <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:key="user_name"
+            app:title="@string/name_title"
             app:useSimpleSummaryProvider="true" />
         <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="edit_text_preference_1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Edit text preference" />
+            app:key="user_email"
+            app:title="@string/email_title"
+            app:enabled="false"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:key="user_content"
+            app:title="@string/user_content_title"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:key="user_company"
+            app:title="@string/user_company_title"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/lang_header">
+        <ListPreference
+            app:entries="@array/lang_entries"
+            app:entryValues="@array/lang_values"
+            app:key="user_lang"
+            app:title="@string/language_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
-
+    <PreferenceCategory app:title="@string/notification_header">
+        <SwitchPreference
+            app:key="user_notification_slack"
+            app:title="@string/slack_notification_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

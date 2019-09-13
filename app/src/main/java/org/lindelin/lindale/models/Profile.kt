@@ -4,6 +4,7 @@ import android.content.Context
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.httpPut
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import org.lindelin.lindale.Application
@@ -43,6 +44,32 @@ data class Profile(var id: Int,
                         }
 
                         callback(profile)
+                    }
+            }
+        }
+
+        fun sync(context: Context) {
+
+            val name = Preferences(context).getString(Keys.USER_NAME)!!
+            val content = Preferences(context).getString(Keys.USER_CONTENT)!!
+            val company = Preferences(context).getString(Keys.USER_ORG)!!
+
+            Preferences(context).getString(Keys.ACCESS_TOKEN)?.let { accessToken ->
+                "/api/settings/profile"
+                    .httpPut(listOf(
+                        "name" to name,
+                        "content" to content,
+                        "company" to company
+                    ))
+                    .authentication()
+                    .bearer(accessToken)
+                    .appendHeader("Accept", "application/json")
+                    .response { _, _, result ->
+                        val (_, error) = result
+
+                        error?.let {
+                            println(it.response.statusCode)
+                        }
                     }
             }
         }

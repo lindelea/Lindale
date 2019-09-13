@@ -3,13 +3,15 @@ package org.lindelin.lindale.supports
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 
 /**
  * [SharedPreferences] Support
  */
 class Preferences(context: Context) {
 
-    private val data: SharedPreferences = context.getSharedPreferences("${context.packageName}_pref", Context.MODE_PRIVATE)
+    //private val data: SharedPreferences = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
+    private val data: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun putString(key: String, value: String?) = transaction { putString(key, value) }
 

@@ -7,6 +7,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.lindelin.lindale.models.Settings
 import org.lindelin.lindale.supports.Keys
 import org.lindelin.lindale.supports.Preferences
 
@@ -49,6 +50,7 @@ class Application : android.app.Application() {
                         putString(Keys.CLIENT_SECRET, oauthInfo["client_secret"].toString())
                     }
                     FuelManager.instance.basePath = clientUrl
+                    syncPreferences()
                     println("App init end...")
                 }
             }
@@ -57,5 +59,22 @@ class Application : android.app.Application() {
                 println(error)
             }
         })
+    }
+
+    fun syncPreferences() {
+        Settings.Locale.fetch(this) {
+            it?.let {
+                Preferences(this).transaction {
+                    putString(Keys.USER_LANG, it.currentLanguage)
+                }
+            }
+        }
+        Settings.Notification.fetch(this) {
+            it?.let {
+                Preferences(this).transaction {
+                    putBoolean(Keys.USER_NOTIFICATION_SLACK, it.getSlackConfig())
+                }
+            }
+        }
     }
 }
