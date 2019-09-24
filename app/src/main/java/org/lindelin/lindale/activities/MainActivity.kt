@@ -18,11 +18,19 @@ import kotlinx.android.synthetic.main.nav_header_main.view.*
 import org.lindelin.lindale.R
 import org.lindelin.lindale.activities.ui.favorite.FavoriteFragment
 import org.lindelin.lindale.activities.ui.home.HomeViewModel
+import org.lindelin.lindale.activities.ui.task.TaskFragment
+import org.lindelin.lindale.activities.ui.task.dummy.DummyContent
 import org.lindelin.lindale.models.Profile
 import org.lindelin.lindale.models.Project
 import org.lindelin.lindale.supports.setImageFromUrl
 
-class MainActivity : AppCompatActivity(), FavoriteFragment.OnListFragmentInteractionListener {
+class MainActivity : AppCompatActivity(),
+    FavoriteFragment.OnListFragmentInteractionListener,
+    TaskFragment.OnListFragmentInteractionListener {
+
+    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+        println(item)
+    }
 
     override fun onListFragmentInteraction(item: Project?) {
         println(item)
@@ -48,7 +56,7 @@ class MainActivity : AppCompatActivity(), FavoriteFragment.OnListFragmentInterac
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_favorite
+                R.id.nav_home, R.id.nav_favorite, R.id.nav_task, R.id.nav_settings
             ), drawerLayout
         )
 
@@ -64,6 +72,7 @@ class MainActivity : AppCompatActivity(), FavoriteFragment.OnListFragmentInterac
         })
     }
 
+// TODO: OptionMenu
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        menuInflater.inflate(R.menu.main, menu)
