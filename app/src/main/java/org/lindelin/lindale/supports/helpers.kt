@@ -2,12 +2,14 @@ package org.lindelin.lindale.supports
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.view.animation.DecelerateInterpolator
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -45,4 +47,12 @@ fun ProgressBar.onProgressChanged(percentage: Int) {
     animation.duration = 500
     animation.interpolator = DecelerateInterpolator()
     animation.start()
+}
+
+fun short_message(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+fun long_message(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }
