@@ -22,13 +22,14 @@ import org.lindelin.lindale.activities.ui.task.TaskFragment
 import org.lindelin.lindale.activities.ui.task.dummy.DummyContent
 import org.lindelin.lindale.models.Profile
 import org.lindelin.lindale.models.Project
+import org.lindelin.lindale.models.Task
 import org.lindelin.lindale.supports.setImageFromUrl
 
 class MainActivity : AppCompatActivity(),
     FavoriteFragment.OnListFragmentInteractionListener,
     TaskFragment.OnListFragmentInteractionListener {
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onListFragmentInteraction(item: Task?) {
         println(item)
     }
 

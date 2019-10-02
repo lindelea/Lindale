@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.kittinunf.fuel.httpGet
+import org.lindelin.lindale.models.MyTaskCollection
 import org.lindelin.lindale.models.Profile
 import org.lindelin.lindale.supports.Keys
 import org.lindelin.lindale.supports.Preferences
@@ -14,7 +15,13 @@ import org.lindelin.lindale.supports.Preferences
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val profile: MutableLiveData<Profile> by lazy {
         MutableLiveData<Profile>().also {
-            loadData()
+            loadProfileData()
+        }
+    }
+
+    private val myTaskCollection: MutableLiveData<MyTaskCollection> by lazy {
+        MutableLiveData<MyTaskCollection>().also {
+            loadMyTaskData()
         }
     }
 
@@ -22,6 +29,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getProfile(): LiveData<Profile> {
         return profile
+    }
+
+    fun getMyTasks(): LiveData<MyTaskCollection> {
+        return myTaskCollection
     }
 
     fun getUserPhoto(): LiveData<Bitmap> {
@@ -39,12 +50,20 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun loadData() {
+    private fun loadProfileData() {
         Profile.fetch(getApplication()) { profile ->
             profile?.let {
                 this.profile.value = it
                 loadImage(it.photo)
                 syncPreferences(profile)
+            }
+        }
+    }
+
+    private fun loadMyTaskData() {
+        MyTaskCollection.fetch(getApplication()) {
+            it?.let {
+                this.myTaskCollection.value = it
             }
         }
     }

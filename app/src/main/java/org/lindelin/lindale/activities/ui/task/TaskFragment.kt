@@ -9,11 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import org.lindelin.lindale.R
+import org.lindelin.lindale.activities.ui.favorite.MyFavoriteRecyclerViewAdapter
+import org.lindelin.lindale.activities.ui.home.HomeViewModel
 
 import org.lindelin.lindale.activities.ui.task.dummy.DummyContent
 import org.lindelin.lindale.activities.ui.task.dummy.DummyContent.DummyItem
+import org.lindelin.lindale.models.Task
 
 /**
  * A fragment representing a list of Items.
@@ -21,6 +26,8 @@ import org.lindelin.lindale.activities.ui.task.dummy.DummyContent.DummyItem
  * [TaskFragment.OnListFragmentInteractionListener] interface.
  */
 class TaskFragment : Fragment() {
+
+    private lateinit var homeViewModel: HomeViewModel
 
     private var columnCount = 1
 
@@ -39,6 +46,9 @@ class TaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_list, container, false)
+        homeViewModel = activity?.run {
+            ViewModelProviders.of(this)[HomeViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -48,7 +58,9 @@ class TaskFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 view.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
-                adapter = MyTaskRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                homeViewModel.getMyTasks().observe(this@TaskFragment, Observer {
+                    adapter = MyTaskRecyclerViewAdapter(it.data, listener)
+                })
             }
         }
         return view
@@ -80,8 +92,7 @@ class TaskFragment : Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: Task?)
     }
 
     companion object {

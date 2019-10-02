@@ -61,8 +61,8 @@ class MyFavoriteRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val typeText: TextView = mView.item_number
-        val titleText: TextView = mView.content
+        val typeText: TextView = mView.userNameText
+        val titleText: TextView = mView.titleText
         val progressText: TextView = mView.progressText
         val taskStatusText: TextView = mView.taskStatusText
         val todoStatusText: TextView = mView.todoStatusText

@@ -176,7 +176,7 @@
                         android:textSize="18sp" />
 
                     <ProgressBar
-                        android:id="@+id/taskProgressBar"
+                        android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="14dp"

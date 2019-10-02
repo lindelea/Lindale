@@ -52,7 +52,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     fun updateUI(profile: Profile) {
         projectProgressBar.onProgressChanged(profile.progress.total)
-        taskProgressBar.onProgressChanged(profile.progress.task)
+        progressBar.onProgressChanged(profile.progress.task)
         todoProgressBar.onProgressChanged(profile.progress.todo)
         activityWebView.loadHtmlString(profile.activity)
         projectCountText.text = profile.status.projectCount.toString()
